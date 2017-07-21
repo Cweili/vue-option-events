@@ -1,3 +1,6 @@
+/**
+ * vue-option-events
+ */
 import {
   each,
   debounce,
