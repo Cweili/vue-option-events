@@ -1,7 +1,10 @@
-/**
- * vue-option-events
- */
-import { each, debounce, isString, isFunction } from 'lodash-es';
+import _isFunction from 'lodash-es/isFunction';
+import _isString from 'lodash-es/isString';
+import _debounce from 'lodash-es/debounce';
+import _each from 'lodash-es/each'; /**
+                                     * vue-option-events
+                                     */
+
 import Vue from 'vue';
 
 var eventHub = new Vue();
@@ -25,16 +28,16 @@ eventHub.install = function (_Vue) {
         return;
       }
       var eventsHandlers = _this._eventsHandlers = {};
-      each(_this.$options.events, function (handler, event) {
+      _each(_this.$options.events, function (handler, event) {
         var fn = void 0;
-        if (isFunction(handler)) {
+        if (_isFunction(handler)) {
           fn = handler;
-        } else if (isString(handler)) {
+        } else if (_isString(handler)) {
           fn = _this.$options.methods[handler];
         } else {
           return;
         }
-        eventsHandlers[event] = debounce(function () {
+        eventsHandlers[event] = _debounce(function () {
           for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
             args[_key2] = arguments[_key2];
           }
@@ -47,7 +50,7 @@ eventHub.install = function (_Vue) {
     },
     beforeDestroy: function beforeDestroy() {
       var _this = this;
-      each(_this._eventsHandlers, function (handler, event) {
+      _each(_this._eventsHandlers, function (handler, event) {
         eventHub.$off(event, handler);
       });
     }

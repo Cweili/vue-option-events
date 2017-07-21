@@ -15,5 +15,8 @@
         "modules": false
       }
     ]
+  ],
+  "plugins": [
+    "lodash"
   ]
 }
