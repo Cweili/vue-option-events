@@ -12,7 +12,7 @@ import Vue from 'vue';
 const eventHub = new Vue();
 
 eventHub.install = (_Vue) => {
-  const originalEmit = Vue.prototype.$emit;
+  const originalEmit = _Vue.prototype.$emit;
 
   _Vue.prototype.$emit = function(event, ...payload) {
     originalEmit.call(this, event, ...payload);

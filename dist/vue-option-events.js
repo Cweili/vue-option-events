@@ -10,7 +10,7 @@ import Vue from 'vue';
 var eventHub = new Vue();
 
 eventHub.install = function (_Vue) {
-  var originalEmit = Vue.prototype.$emit;
+  var originalEmit = _Vue.prototype.$emit;
 
   _Vue.prototype.$emit = function (event) {
     for (var _len = arguments.length, payload = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
