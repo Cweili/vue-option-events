@@ -28,7 +28,7 @@ Component A
 ```js
 new Vue({
   methods: {
-    show(message) {
+    show(hiMessage) {
       console.log(hiMessage);
     }
   },
