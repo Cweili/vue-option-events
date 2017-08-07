@@ -1,6 +1,5 @@
 import _isFunction from 'lodash-es/isFunction';
 import _isString from 'lodash-es/isString';
-import _debounce from 'lodash-es/debounce';
 import _each from 'lodash-es/each'; /**
                                      * vue-option-events
                                      */
@@ -37,13 +36,13 @@ eventHub.install = function (_Vue) {
         } else {
           return;
         }
-        eventsHandlers[event] = _debounce(function () {
+        eventsHandlers[event] = function () {
           for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
             args[_key2] = arguments[_key2];
           }
 
           fn.apply(_this, args);
-        }, 50);
+        };
         _this.$on(event, eventsHandlers[event]);
         eventHub.$on(event, eventsHandlers[event]);
       });

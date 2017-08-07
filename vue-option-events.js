@@ -3,7 +3,6 @@
  */
 import {
   each,
-  debounce,
   isString,
   isFunction
 } from 'lodash-es';
@@ -35,9 +34,9 @@ eventHub.install = (_Vue) => {
         } else {
           return;
         }
-        eventsHandlers[event] = debounce((...args) => {
+        eventsHandlers[event] = (...args) => {
           fn.apply(_this, args);
-        }, 50);
+        };
         _this.$on(event, eventsHandlers[event]);
         eventHub.$on(event, eventsHandlers[event]);
       });
