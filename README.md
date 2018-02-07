@@ -1,8 +1,11 @@
 # vue-option-events
 
-Bring Vue 1 events option and $emit to Vue 2.
+[![npm][npm-version]](npm)
+[![npm][npm-downloads]](npm)
+[![npm][npm-license]](npm)
+[![github][github-issues]](github)
 
-[![npm](https://nodei.co/npm/vue-option-events.png?downloads=true&stars=true)](https://www.npmjs.com/package/vue-option-events)
+Bring Vue 1 events option and $emit to Vue 2.
 
 ## Install
 
@@ -54,3 +57,11 @@ new Vue({
   }
 });
 ```
+
+[npm]: https://www.npmjs.com/package/vue-option-events
+[npm-version]: https://img.shields.io/npm/v/vue-option-events.svg
+[npm-downloads]: https://img.shields.io/npm/dt/vue-option-events.svg
+[npm-license]: https://img.shields.io/npm/l/vue-option-events.svg
+
+[github]: https://github.com/Cweili/vue-option-events
+[github-issues]: https://img.shields.io/github/issues/Cweili/vue-option-events.svg
