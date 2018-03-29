@@ -1,9 +1,9 @@
 # vue-option-events
 
-[![npm][npm-version]](npm)
-[![npm][npm-downloads]](npm)
-[![npm][npm-license]](npm)
-[![github][github-issues]](github)
+[![npm][npm-version]][npm]
+[![npm][npm-downloads]][npm]
+[![npm][npm-license]][npm]
+[![github][github-issues]][github]
 
 Bring Vue 1 events option and $emit to Vue 2.
 
