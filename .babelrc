@@ -12,11 +12,14 @@
           ]
         },
         "loose": true,
-        "modules": false
+        "modules": false,
+        "exclude": [
+          "transform-es2015-typeof-symbol"
+        ]
       }
     ]
   ],
   "plugins": [
-    "lodash"
+    "external-helpers"
   ]
 }

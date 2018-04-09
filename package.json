@@ -21,17 +21,22 @@
   "bugs": {
     "url": "https://github.com/Cweili/vue-option-events/issues"
   },
-  "main": "dist/vue-option-events.js",
+  "main": "dist/vue-option-events.cjs.js",
+  "module": "dist/vue-option-events.esm.js",
+  "unpkg": "dist/vue-option-events.js",
+  "jsdelivr": "dist/vue-option-events.js",
   "scripts": {
-    "build": "babel *.js -d dist"
+    "build": "rollup -c"
   },
   "dependencies": {
-    "lodash-es": "*",
     "vue": ">=2.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-plugin-lodash": "^3.2.11",
-    "babel-preset-env": "^1.6.0"
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.6.0",
+    "rollup": "^0.57.1",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-node-resolve": "^3.3.0"
   }
 }
