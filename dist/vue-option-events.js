@@ -56,7 +56,9 @@
       }
 
       originalEmit.call.apply(originalEmit, [this, event].concat(payload));
-      originalEmit.call.apply(originalEmit, [eventHub, event].concat(payload));
+      if (this != eventHub) {
+        originalEmit.call.apply(originalEmit, [eventHub, event].concat(payload));
+      }
     };
 
     _Vue.mixin({
@@ -82,7 +84,6 @@
 
             fn.apply(_this, args);
           };
-          _this.$on(event, eventsHandlers[event]);
           eventHub.$on(event, eventsHandlers[event]);
         });
       },

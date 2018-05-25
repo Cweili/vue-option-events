@@ -65,7 +65,6 @@ eventHub.install = (_Vue) => {
         eventsHandlers[event] = (...args) => {
           fn.apply(_this, args);
         };
-        _this.$on(event, eventsHandlers[event]);
         eventHub.$on(event, eventsHandlers[event]);
       });
     },
