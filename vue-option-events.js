@@ -41,7 +41,9 @@ eventHub.install = (_Vue) => {
 
   _Vue.prototype.$emit = function(event, ...payload) {
     originalEmit.call(this, event, ...payload);
-    originalEmit.call(eventHub, event, ...payload);
+    if (this != eventHub) {
+      originalEmit.call(eventHub, event, ...payload);
+    }
   };
 
   _Vue.mixin({
