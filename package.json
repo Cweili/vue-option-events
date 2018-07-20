@@ -25,6 +25,7 @@
   "module": "dist/vue-option-events.esm.js",
   "unpkg": "dist/vue-option-events.js",
   "jsdelivr": "dist/vue-option-events.js",
+  "sideEffects": false,
   "scripts": {
     "build": "rollup -c"
   },
