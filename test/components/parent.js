@@ -9,28 +9,39 @@ export default {
 
   data: () => ({
     from: '',
-    count: 0
+    count: 0,
+    hasA: true,
+    countFromA: 0
   }),
 
   methods: {
     sayHello() {
       this.$emit('hello', 'Parent');
       this.$emit('increaseCount');
+    },
+    destroyA() {
+      this.hasA = false;
     }
   },
 
   events: {
-    hello: {},
-    increaseCount: true
+    hello: {}, // invalid
+    increaseCount: true, // invalid
+    increaseCountFromA() {
+      this.countFromA++;
+    }
   },
 
-  render: h =>
-    h('div', {}, [
-      h('A', {
-        ref: 'a'
-      }),
+  render(h) {
+    return h('div', {}, [
+      this.hasA
+        ? h('A', {
+            ref: 'a'
+          })
+        : '',
       h('B', {
         ref: 'b'
       })
-    ])
+    ]);
+  }
 };

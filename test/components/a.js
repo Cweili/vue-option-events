@@ -13,6 +13,7 @@ export default {
   methods: {
     increaseCount() {
       this.count++;
+      this.$emit('increaseCountFromA');
     },
     sayHello() {
       this.$emit('hello', 'A');
