@@ -1,7 +1,5 @@
 # vue-option-events
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/Cweili/vue-option-events.svg)](https://greenkeeper.io/)
-
 [![npm][npm-version]][npm]
 [![npm][npm-downloads]][npm]
 [![npm][npm-license]][npm]

@@ -2,7 +2,15 @@
   "name": "vue-option-events",
   "version": "1.0.0",
   "description": "Bring Vue 1 events option and $emit to Vue 2.",
-  "keywords": ["vue", "event", "events", "option", "options", "bus", "hub"],
+  "keywords": [
+    "vue",
+    "event",
+    "events",
+    "option",
+    "options",
+    "bus",
+    "hub"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Cweili/vue-option-events.git"
@@ -31,7 +39,7 @@
     "babel-preset-env": "^1.6.0",
     "jest": "^23.5.0",
     "rollup": "^0.66.6",
-    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-node-resolve": "^3.3.0",
     "vue-template-compiler": "^2.5.17"
   }
