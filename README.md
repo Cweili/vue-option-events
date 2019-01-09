@@ -65,9 +65,12 @@ new Vue({
 [npm-version]: https://img.shields.io/npm/v/vue-option-events.svg
 [npm-downloads]: https://img.shields.io/npm/dt/vue-option-events.svg
 [npm-license]: https://img.shields.io/npm/l/vue-option-events.svg
+
 [github]: https://github.com/Cweili/vue-option-events
 [github-issues]: https://img.shields.io/github/issues/Cweili/vue-option-events.svg
+
 [travis]: https://travis-ci.org/Cweili/vue-option-events
-[travis-build]: https://img.shields.io/travis/Cweili/vue-option-events.svg
+[travis-build]: https://travis-ci.org/Cweili/vue-option-events.svg?branch=master
+
 [codecov]: https://codecov.io/gh/Cweili/vue-option-events
 [codecov-svg]: https://img.shields.io/codecov/c/github/Cweili/vue-option-events.svg
