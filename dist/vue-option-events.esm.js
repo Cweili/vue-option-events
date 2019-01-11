@@ -1,9 +1,6 @@
-import Vue from 'vue';
-
 /**
  * vue-option-events
  */
-
 function isString(value) {
   if (typeof value === 'string') {
     return true;
@@ -39,10 +36,20 @@ function each(collection, handler) {
   }));
 }
 
-var eventHub = new Vue();
+var eventHub = {};
 
 eventHub.install = function (_Vue) {
+  if (eventHub.$emit) {
+    // already installed
+    return;
+  }
+
   var originalEmit = _Vue.prototype.$emit;
+  var vue = new _Vue();
+
+  each(['$on', '$once', '$off', '$emit'], function (name) {
+    eventHub[name] = vue[name].bind(vue);
+  });
 
   _Vue.prototype.$emit = function (event) {
     for (var _len = arguments.length, payload = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -50,8 +57,8 @@ eventHub.install = function (_Vue) {
     }
 
     originalEmit.call.apply(originalEmit, [this, event].concat(payload));
-    if (this != eventHub) {
-      originalEmit.call.apply(originalEmit, [eventHub, event].concat(payload));
+    if (this != vue) {
+      originalEmit.call.apply(originalEmit, [vue, event].concat(payload));
     }
   };
 
@@ -71,13 +78,7 @@ eventHub.install = function (_Vue) {
         } else {
           return;
         }
-        eventsHandlers[event] = function () {
-          for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-            args[_key2] = arguments[_key2];
-          }
-
-          fn.apply(_this, args);
-        };
+        eventsHandlers[event] = fn.bind(_this);
         eventHub.$on(event, eventsHandlers[event]);
       });
     },
