@@ -1,6 +1,7 @@
 # vue-option-events
 
 [![npm][npm-version]][npm]
+[![npm][npm-size]][npm]
 [![npm][npm-downloads]][npm]
 [![npm][npm-license]][npm]
 
@@ -63,6 +64,7 @@ new Vue({
 
 [npm]: https://www.npmjs.com/package/vue-option-events
 [npm-version]: https://img.shields.io/npm/v/vue-option-events.svg
+[npm-size]: https://img.shields.io/bundlephobia/minzip/vue-option-events.svg
 [npm-downloads]: https://img.shields.io/npm/dt/vue-option-events.svg
 [npm-license]: https://img.shields.io/npm/l/vue-option-events.svg
 
