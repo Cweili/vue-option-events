@@ -1,8 +1,6 @@
 /**
  * vue-option-events
  */
-import Vue from 'vue';
-
 function isString(value) {
 	if (typeof value === 'string') { return true; }
 	if (typeof value !== 'object') { return false; }
@@ -34,15 +32,29 @@ function each(collection, handler) {
     : Object.keys(collection).forEach(key => handler(collection[key], key)));
 }
 
-const eventHub = new Vue();
+const eventHub = {};
 
 eventHub.install = (_Vue) => {
+  if (eventHub.$emit) { // already installed
+    return;
+  }
+
   const originalEmit = _Vue.prototype.$emit;
+  const vue = new _Vue();
+
+  each([
+    '$on',
+    '$once',
+    '$off',
+    '$emit'
+  ], (name) => {
+    eventHub[name] = vue[name].bind(vue);
+  });
 
   _Vue.prototype.$emit = function(event, ...payload) {
     originalEmit.call(this, event, ...payload);
-    if (this != eventHub) {
-      originalEmit.call(eventHub, event, ...payload);
+    if (this != vue) {
+      originalEmit.call(vue, event, ...payload);
     }
   };
 
@@ -62,9 +74,7 @@ eventHub.install = (_Vue) => {
         } else {
           return;
         }
-        eventsHandlers[event] = (...args) => {
-          fn.apply(_this, args);
-        };
+        eventsHandlers[event] = fn.bind(_this);
         eventHub.$on(event, eventsHandlers[event]);
       });
     },
