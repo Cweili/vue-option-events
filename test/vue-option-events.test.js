@@ -47,11 +47,18 @@ describe('vue-option-events', () => {
     expect(a.count).toBe(1);
   });
 
-  it('should handle events from event-hub', () => {
+  it('should handle events from global event bus', () => {
     const { a } = vm.$refs;
-    vueOptionEvents.$emit('hello', 'Event-hub');
+    a.$refs.grandchild.sayHelloFromGlobalEventBus();
+    expect(a.from).toBe('GlobalEventBus');
+    expect(a.count).toBe(1);
+  });
+
+  it('should handle events from any where', () => {
+    const { a } = vm.$refs;
+    vueOptionEvents.$emit('hello', 'EventBus');
     vueOptionEvents.$emit('increaseCount');
-    expect(a.from).toBe('Event-hub');
+    expect(a.from).toBe('EventBus');
     expect(a.count).toBe(1);
   });
 

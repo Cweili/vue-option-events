@@ -32,58 +32,59 @@ function each(collection, handler) {
     : Object.keys(collection).forEach(key => handler(collection[key], key)));
 }
 
-const eventHub = {};
-
-eventHub.install = (_Vue) => {
-  if (eventHub.$emit) { // already installed
-    return;
-  }
-
-  const originalEmit = _Vue.prototype.$emit;
-  const vue = new _Vue();
-
-  each([
-    '$on',
-    '$once',
-    '$off',
-    '$emit'
-  ], (name) => {
-    eventHub[name] = vue[name].bind(vue);
-  });
-
-  _Vue.prototype.$emit = function(event, ...payload) {
-    originalEmit.call(this, event, ...payload);
-    if (this != vue) {
-      originalEmit.call(vue, event, ...payload);
+const eventBus = {
+  install(Vue) {
+    if (eventBus.$emit) { // already installed
+      return;
     }
-  };
 
-  _Vue.mixin({
-    beforeCreate() {
-      const _this = this;
-      if (!_this.$options.events) {
-        return;
+    const originalEmit = Vue.prototype.$emit;
+    const vue = new Vue();
+
+    each([
+      '$on',
+      '$once',
+      '$off',
+      '$emit'
+    ], (name) => {
+      eventBus[name] = vue[name].bind(vue);
+    });
+
+    Vue.prototype.$event = eventBus;
+    Vue.prototype.$emit = function (event, ...payload) {
+      originalEmit.call(this, event, ...payload);
+      if (this != vue) {
+        originalEmit.call(vue, event, ...payload);
       }
-      const eventsHandlers = _this._eventsHandlers = {};
-      each(_this.$options.events, (handler, event) => {
-        let fn;
-        if (isFunction(handler)) {
-          fn = handler;
-        } else if (isString(handler)) {
-          fn = _this.$options.methods[handler];
-        } else {
+    };
+
+    Vue.mixin({
+      beforeCreate() {
+        const _this = this;
+        if (!_this.$options.events) {
           return;
         }
-        eventsHandlers[event] = fn.bind(_this);
-        eventHub.$on(event, eventsHandlers[event]);
-      });
-    },
-    beforeDestroy() {
-      each(this._eventsHandlers, (handler, event) => {
-        eventHub.$off(event, handler);
-      });
-    }
-  });
+        const eventsHandlers = _this._eventsHandlers = {};
+        each(_this.$options.events, (handler, event) => {
+          let fn;
+          if (isFunction(handler)) {
+            fn = handler;
+          } else if (isString(handler)) {
+            fn = _this.$options.methods[handler];
+          } else {
+            return;
+          }
+          eventsHandlers[event] = fn.bind(_this);
+          eventBus.$on(event, eventsHandlers[event]);
+        });
+      },
+      beforeDestroy() {
+        each(this._eventsHandlers, (handler, event) => {
+          eventBus.$off(event, handler);
+        });
+      }
+    });
+  }
 };
 
-export default eventHub;
+export default eventBus;
