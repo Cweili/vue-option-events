@@ -9,7 +9,7 @@
 [![travis][travis-build]][travis]
 [![codecov][codecov-svg]][codecov]
 
-Bring Vue 1 events option and $emit to Vue 2.
+Bring Vue.js 1 events option and $emit to Vue.js 2.
 
 ## Install
 
@@ -60,6 +60,26 @@ new Vue({
     }
   }
 });
+```
+
+### Use as global event bus
+
+```js
+new Vue({
+  methods: {
+    send() {
+      this.$event.$emit('hello', 'world');
+    }
+  }
+});
+```
+
+### Emit events from any where
+
+```js
+import eventBus from 'vue-option-events';
+
+eventBus.$emit('hello', 'world');
 ```
 
 [npm]: https://www.npmjs.com/package/vue-option-events
