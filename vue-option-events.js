@@ -2,9 +2,9 @@
  * vue-option-events
  */
 function isString(value) {
-	if (typeof value === 'string') { return true; }
-	if (typeof value !== 'object') { return false; }
-	return Object.prototype.toString.call(value) === '[object String]';
+  if (typeof value === 'string') { return true; }
+  if (typeof value !== 'object') { return false; }
+  return Object.prototype.toString.call(value) === '[object String]';
 }
 
 function isObject(value) {
@@ -34,10 +34,6 @@ function each(collection, handler) {
 
 const eventBus = {
   install(Vue) {
-    if (eventBus.$emit) { // already installed
-      return;
-    }
-
     const originalEmit = Vue.prototype.$emit;
     const vue = new Vue();
 
@@ -45,13 +41,13 @@ const eventBus = {
       '$on',
       '$once',
       '$off',
-      '$emit'
+      '$emit',
     ], (name) => {
       eventBus[name] = vue[name].bind(vue);
     });
 
     Vue.prototype.$event = eventBus;
-    Vue.prototype.$emit = function (event, ...payload) {
+    Vue.prototype.$emit = function $emit(event, ...payload) {
       originalEmit.call(this, event, ...payload);
       if (this != vue) {
         originalEmit.call(vue, event, ...payload);
@@ -64,7 +60,7 @@ const eventBus = {
         if (!_this.$options.events) {
           return;
         }
-        const eventsHandlers = _this._eventsHandlers = {};
+        const eventHandlers = _this._eventHandlers = {};
         each(_this.$options.events, (handler, event) => {
           let fn;
           if (isFunction(handler)) {
@@ -74,17 +70,17 @@ const eventBus = {
           } else {
             return;
           }
-          eventsHandlers[event] = fn.bind(_this);
-          eventBus.$on(event, eventsHandlers[event]);
+          eventHandlers[event] = fn.bind(_this);
+          eventBus.$on(event, eventHandlers[event]);
         });
       },
       beforeDestroy() {
-        each(this._eventsHandlers, (handler, event) => {
+        each(this._eventHandlers, (handler, event) => {
           eventBus.$off(event, handler);
         });
-      }
+      },
     });
-  }
+  },
 };
 
 export default eventBus;

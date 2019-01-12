@@ -11,9 +11,9 @@ describe('vue-option-events', () => {
 
   beforeEach(() => {
     wrapper = mount(Parent, {
-      localVue
+      localVue,
     });
-    vm = wrapper.vm;
+    vm = wrapper.vm; // eslint-disable-line prefer-destructuring
   });
   afterEach(() => {
     wrapper.destroy();
