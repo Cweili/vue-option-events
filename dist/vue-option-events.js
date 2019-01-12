@@ -42,60 +42,56 @@
     }));
   }
 
-  var eventHub = {};
+  var eventBus = {
+    install: function install(Vue) {
+      var originalEmit = Vue.prototype.$emit;
+      var vue = new Vue();
 
-  eventHub.install = function (_Vue) {
-    if (eventHub.$emit) {
-      // already installed
-      return;
-    }
+      each(['$on', '$once', '$off', '$emit'], function (name) {
+        eventBus[name] = vue[name].bind(vue);
+      });
 
-    var originalEmit = _Vue.prototype.$emit;
-    var vue = new _Vue();
-
-    each(['$on', '$once', '$off', '$emit'], function (name) {
-      eventHub[name] = vue[name].bind(vue);
-    });
-
-    _Vue.prototype.$emit = function (event) {
-      for (var _len = arguments.length, payload = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        payload[_key - 1] = arguments[_key];
-      }
-
-      originalEmit.call.apply(originalEmit, [this, event].concat(payload));
-      if (this != vue) {
-        originalEmit.call.apply(originalEmit, [vue, event].concat(payload));
-      }
-    };
-
-    _Vue.mixin({
-      beforeCreate: function beforeCreate() {
-        var _this = this;
-        if (!_this.$options.events) {
-          return;
+      Vue.prototype.$event = eventBus;
+      Vue.prototype.$emit = function $emit(event) {
+        for (var _len = arguments.length, payload = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          payload[_key - 1] = arguments[_key];
         }
-        var eventsHandlers = _this._eventsHandlers = {};
-        each(_this.$options.events, function (handler, event) {
-          var fn = void 0;
-          if (isFunction(handler)) {
-            fn = handler;
-          } else if (isString(handler)) {
-            fn = _this.$options.methods[handler];
-          } else {
+
+        originalEmit.call.apply(originalEmit, [this, event].concat(payload));
+        if (this != vue) {
+          originalEmit.call.apply(originalEmit, [vue, event].concat(payload));
+        }
+      };
+
+      Vue.mixin({
+        beforeCreate: function beforeCreate() {
+          var _this = this;
+          if (!_this.$options.events) {
             return;
           }
-          eventsHandlers[event] = fn.bind(_this);
-          eventHub.$on(event, eventsHandlers[event]);
-        });
-      },
-      beforeDestroy: function beforeDestroy() {
-        each(this._eventsHandlers, function (handler, event) {
-          eventHub.$off(event, handler);
-        });
-      }
-    });
+          var eventHandlers = _this._eventHandlers = {};
+          each(_this.$options.events, function (handler, event) {
+            var fn = void 0;
+            if (isFunction(handler)) {
+              fn = handler;
+            } else if (isString(handler)) {
+              fn = _this.$options.methods[handler];
+            } else {
+              return;
+            }
+            eventHandlers[event] = fn.bind(_this);
+            eventBus.$on(event, eventHandlers[event]);
+          });
+        },
+        beforeDestroy: function beforeDestroy() {
+          each(this._eventHandlers, function (handler, event) {
+            eventBus.$off(event, handler);
+          });
+        }
+      });
+    }
   };
 
-  return eventHub;
+  return eventBus;
 
 }));
