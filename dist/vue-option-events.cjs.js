@@ -72,7 +72,9 @@ var eventBus = {
             fn = handler;
           } else if (isString(handler)) {
             fn = _this.$options.methods[handler];
-          } else {
+          }
+          if (!isFunction(fn)) {
+            Vue.util.warn('handler for event "' + event + '" is not a function', _this);
             return;
           }
           eventHandlers[event] = fn.bind(_this);
