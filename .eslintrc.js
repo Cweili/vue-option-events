@@ -12,6 +12,7 @@ module.exports = {
     eqeqeq: 0,
     'no-multi-assign': 0,
     'no-param-reassign': 0,
+    'no-plusplus': 0,
     'no-underscore-dangle': 0
   }
 };

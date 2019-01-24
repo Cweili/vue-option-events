@@ -2,16 +2,18 @@ import A from './a';
 import B from './b';
 
 export default {
+  name: 'Parent',
+
   components: {
     A,
-    B
+    B,
   },
 
   data: () => ({
     from: '',
     count: 0,
     hasA: true,
-    countFromA: 0
+    countFromA: 0,
   }),
 
   methods: {
@@ -21,7 +23,7 @@ export default {
     },
     destroyA() {
       this.hasA = false;
-    }
+    },
   },
 
   events: {
@@ -29,19 +31,19 @@ export default {
     increaseCount: true, // invalid
     increaseCountFromA() {
       this.countFromA++;
-    }
+    },
   },
 
   render(h) {
     return h('div', {}, [
       this.hasA
         ? h('A', {
-            ref: 'a'
-          })
+          ref: 'a',
+        })
         : '',
       h('B', {
-        ref: 'b'
-      })
+        ref: 'b',
+      }),
     ]);
-  }
+  },
 };

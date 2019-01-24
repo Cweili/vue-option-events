@@ -1,4 +1,6 @@
 export default {
+  name: 'Grandchild',
+
   methods: {
     sayHello() {
       this.$emit('hello', 'Grandchild');
@@ -7,8 +9,8 @@ export default {
     sayHelloFromGlobalEventBus() {
       this.$event.$emit('hello', 'GlobalEventBus');
       this.$event.$emit('increaseCount');
-    }
+    },
   },
 
-  render: h => h('div')
+  render: h => h('div'),
 };
