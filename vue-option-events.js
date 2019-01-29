@@ -16,7 +16,9 @@ function offAll(eventBus, vm) {
 }
 
 const eventBus = {
-  install(Vue) {
+  install(Vue, {
+    keepAlive = false,
+  } = {}) {
     const originalEmit = Vue.prototype.$emit;
     const vue = new Vue();
 
@@ -71,7 +73,7 @@ const eventBus = {
       },
       activated() {
         const vm = this;
-        if (vm[INACTIVE_NAME]) {
+        if (!keepAlive && vm[INACTIVE_NAME]) {
           each(vm[HANDLER_MAP_NAME], (handler, event) => {
             eventBus.$on(event, handler);
           });
@@ -79,8 +81,10 @@ const eventBus = {
         }
       },
       deactivated() {
-        offAll(eventBus, this);
-        this[INACTIVE_NAME] = true;
+        if (!keepAlive) {
+          offAll(eventBus, this);
+          this[INACTIVE_NAME] = true;
+        }
       },
       beforeDestroy() {
         offAll(eventBus, this);
