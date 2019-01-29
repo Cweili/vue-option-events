@@ -30,7 +30,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "rollup -c",
-    "test": "jest test --collectCoverage --coverageDirectory ./coverage/",
+    "test": "jest test --collectCoverage",
     "lint": "eslint --fix *.js test/*.js"
   },
   "devDependencies": {

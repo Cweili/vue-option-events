@@ -1,35 +1,18 @@
-/**
- * vue-option-events
- */
-function isString(value) {
-  if (typeof value === 'string') { return true; }
-  if (typeof value !== 'object') { return false; }
-  return Object.prototype.toString.call(value) === '[object String]';
-}
+import {
+  isString,
+  isObject,
+  isFunction,
+  each,
+} from './lib/utils';
 
-function isObject(value) {
-  const type = typeof value;
-  return value != null && (type == 'object' || type == 'function');
-}
+const OPTION_NAME = 'events';
+const HANDLER_MAP_NAME = '_eventHandlers';
+const INACTIVE_NAME = '_eventInactive';
 
-function isFunction(value) {
-  if (!isObject(value)) {
-    return false;
-  }
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 9 which returns 'object' for typed arrays and other constructors.
-  const tag = Object.prototype.toString.call(value);
-  const asyncTag = '[object AsyncFunction]';
-  const funcTag = '[object Function]';
-  const genTag = '[object GeneratorFunction]';
-  const proxyTag = '[object Proxy]';
-  return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
-}
-
-function each(collection, handler) {
-  return collection && (Array.isArray(collection)
-    ? collection.forEach(handler)
-    : Object.keys(collection).forEach(key => handler(collection[key], key)));
+function offAll(eventBus, vm) {
+  each(vm[HANDLER_MAP_NAME], (handler, event) => {
+    eventBus.$off(event, handler);
+  });
 }
 
 const eventBus = {
@@ -46,7 +29,7 @@ const eventBus = {
       eventBus[name] = vue[name].bind(vue);
     });
 
-    Vue.config.optionMergeStrategies.events = (to, from) => {
+    Vue.config.optionMergeStrategies[OPTION_NAME] = (to, from) => {
       if (!to) {
         return from;
       }
@@ -66,30 +49,41 @@ const eventBus = {
 
     Vue.mixin({
       beforeCreate() {
-        const _this = this;
-        if (!isObject(_this.$options.events)) {
+        const vm = this;
+        if (!isObject(vm.$options[OPTION_NAME])) {
           return;
         }
-        const eventHandlers = _this._eventHandlers = {};
-        each(_this.$options.events, (handler, event) => {
+        const eventHandlers = vm[HANDLER_MAP_NAME] = {};
+        each(vm.$options[OPTION_NAME], (handler, event) => {
           let fn;
           if (isFunction(handler)) {
             fn = handler;
           } else if (isString(handler)) {
-            fn = _this.$options.methods[handler];
+            fn = vm.$options.methods[handler];
           }
           if (!isFunction(fn)) {
-            Vue.util.warn(`handler for event "${event}" is not a function`, _this);
+            Vue.util.warn(`handler for event "${event}" is not a function`, vm);
             return;
           }
-          eventHandlers[event] = fn.bind(_this);
+          eventHandlers[event] = fn.bind(vm);
           eventBus.$on(event, eventHandlers[event]);
         });
       },
+      activated() {
+        const vm = this;
+        if (vm[INACTIVE_NAME]) {
+          each(vm[HANDLER_MAP_NAME], (handler, event) => {
+            eventBus.$on(event, handler);
+          });
+          vm[INACTIVE_NAME] = false;
+        }
+      },
+      deactivated() {
+        offAll(eventBus, this);
+        this[INACTIVE_NAME] = true;
+      },
       beforeDestroy() {
-        each(this._eventHandlers, (handler, event) => {
-          eventBus.$off(event, handler);
-        });
+        offAll(eventBus, this);
       },
     });
   },
