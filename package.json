@@ -1,6 +1,6 @@
 {
   "name": "vue-option-events",
-  "version": "1.2.2",
+  "version": "2.0.0",
   "description": "Bring Vue.js 1 events option and $emit to Vue.js 2.",
   "keywords": [
     "vue",
@@ -31,13 +31,15 @@
   "scripts": {
     "build": "rollup -c",
     "test": "jest test --collectCoverage",
-    "lint": "eslint --fix *.js test/*.js"
+    "lint": "eslint --fix *.js test/*.js",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "devDependencies": {
     "@vue/test-utils": "^1.0.0-beta.28",
     "babel-core": "^6.26.0",
     "babel-eslint": "^10.0.1",
     "babel-preset-env": "^1.6.0",
+    "conventional-changelog-cli": "^2.0.11",
     "eslint": "^5.12.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
