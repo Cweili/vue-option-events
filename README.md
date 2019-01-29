@@ -82,6 +82,16 @@ import eventBus from 'vue-option-events';
 eventBus.$emit('hello', 'world');
 ```
 
+## Options
+
+```js
+Vue.use(vueOptionEvents, {
+  keepAlive: false
+});
+```
+
+- `keepAlive` enable if you want keep handling events on inactive [keep-alive components](https://vuejs.org/v2/api/#keep-alive), default `false`
+
 [npm]: https://www.npmjs.com/package/vue-option-events
 [npm-version]: https://img.shields.io/npm/v/vue-option-events.svg
 [npm-size]: https://img.shields.io/bundlephobia/minzip/vue-option-events.svg
