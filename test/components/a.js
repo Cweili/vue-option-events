@@ -1,7 +1,10 @@
 import Grandchild from './grandchild';
+import increaseCountMixin from './increase-count-mixin';
 
 export default {
   name: 'A',
+
+  mixins: [increaseCountMixin],
 
   components: {
     Grandchild,
@@ -27,7 +30,6 @@ export default {
     hello(from) {
       this.from = from;
     },
-    increaseCount: 'increaseCount',
   },
 
   render: h => h('div', {}, [

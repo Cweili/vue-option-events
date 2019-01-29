@@ -46,6 +46,16 @@ const eventBus = {
       eventBus[name] = vue[name].bind(vue);
     });
 
+    Vue.config.optionMergeStrategies.events = (to, from) => {
+      if (!to) {
+        return from;
+      }
+      if (!from) {
+        return to;
+      }
+      return Vue.util.extend(to, from);
+    };
+
     Vue.prototype.$event = eventBus;
     Vue.prototype.$emit = function $emit(event, ...payload) {
       originalEmit.call(this, event, ...payload);
@@ -57,7 +67,7 @@ const eventBus = {
     Vue.mixin({
       beforeCreate() {
         const _this = this;
-        if (!_this.$options.events) {
+        if (!isObject(_this.$options.events)) {
           return;
         }
         const eventHandlers = _this._eventHandlers = {};
