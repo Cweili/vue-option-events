@@ -34,3 +34,6 @@ bower_components
 
 # IDE configs
 .idea
+
+# Distributions
+dist

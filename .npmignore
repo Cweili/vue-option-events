@@ -41,5 +41,4 @@ bower_components
 
 # IDE configs
 .editorconfig
-.eslintrc
 .idea
