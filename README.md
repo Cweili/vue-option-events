@@ -1,13 +1,14 @@
 # vue-option-events
 
-[![npm][npm-version]][npm]
-[![npm][npm-size]][npm]
-[![npm][npm-downloads]][npm]
-[![npm][npm-license]][npm]
+[![npm][badge-version]][npm]
+[![bundle size][badge-size]][bundlephobia]
+[![npm downloads][badge-downloads]][npm]
+[![license][badge-license]][license]
 
-[![github][github-issues]][github]
-[![travis][travis-build]][travis]
-[![codecov][codecov-svg]][codecov]
+
+[![github][badge-issues]][github]
+[![travis][badge-build]][travis]
+[![coverage][badge-coverage]][codecov]
 
 Bring Vue.js 1 events option and $emit to Vue.js 2.
 
@@ -92,17 +93,21 @@ Vue.use(vueOptionEvents, {
 
 - `keepAlive` enable if you want keep handling events on inactive [keep-alive components](https://vuejs.org/v2/api/#keep-alive), default `false`
 
+[badge-version]: https://img.shields.io/npm/v/vue-option-events.svg
+[badge-downloads]: https://img.shields.io/npm/dt/vue-option-events.svg
 [npm]: https://www.npmjs.com/package/vue-option-events
-[npm-version]: https://img.shields.io/npm/v/vue-option-events.svg
-[npm-size]: https://img.shields.io/bundlephobia/minzip/vue-option-events.svg
-[npm-downloads]: https://img.shields.io/npm/dt/vue-option-events.svg
-[npm-license]: https://img.shields.io/npm/l/vue-option-events.svg
 
+[badge-size]: https://img.shields.io/bundlephobia/minzip/vue-option-events.svg
+[bundlephobia]: https://bundlephobia.com/result?p=vue-option-events
+
+[badge-license]: https://img.shields.io/npm/l/vue-option-events.svg
+[license]: https://github.com/Cweili/vue-option-events/blob/master/LICENSE
+
+[badge-issues]: https://img.shields.io/github/issues/Cweili/vue-option-events.svg
 [github]: https://github.com/Cweili/vue-option-events
-[github-issues]: https://img.shields.io/github/issues/Cweili/vue-option-events.svg
 
+[badge-build]: https://travis-ci.org/Cweili/vue-option-events.svg?branch=master
 [travis]: https://travis-ci.org/Cweili/vue-option-events
-[travis-build]: https://travis-ci.org/Cweili/vue-option-events.svg?branch=master
 
+[badge-coverage]: https://img.shields.io/codecov/c/github/Cweili/vue-option-events.svg
 [codecov]: https://codecov.io/gh/Cweili/vue-option-events
-[codecov-svg]: https://img.shields.io/codecov/c/github/Cweili/vue-option-events.svg
