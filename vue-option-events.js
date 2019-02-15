@@ -22,6 +22,11 @@ const eventBus = {
     const originalEmit = Vue.prototype.$emit;
     const vue = new Vue();
 
+    const strats = Vue.config.optionMergeStrategies;
+    // use the same methods merging strategy for events
+    strats[OPTION_NAME] = strats.methods;
+
+    // global event bus
     each([
       '$on',
       '$once',
@@ -30,16 +35,6 @@ const eventBus = {
     ], (name) => {
       eventBus[name] = vue[name].bind(vue);
     });
-
-    Vue.config.optionMergeStrategies[OPTION_NAME] = (to, from) => {
-      if (!to) {
-        return from;
-      }
-      if (!from) {
-        return to;
-      }
-      return Vue.util.extend(to, from);
-    };
 
     Vue.prototype.$event = eventBus;
     Vue.prototype.$emit = function $emit(event, ...payload) {
