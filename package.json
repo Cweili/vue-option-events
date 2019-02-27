@@ -1,6 +1,6 @@
 {
   "name": "vue-option-events",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Bring Vue.js 1 events option and $emit to Vue.js 2.",
   "keywords": [
     "vue",
