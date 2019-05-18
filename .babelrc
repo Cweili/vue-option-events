@@ -2,15 +2,6 @@
   "presets": [
     [
       "@babel/preset-env", {
-        "targets": {
-          "browsers": [
-            "last 3 versions",
-            "Android >= 4",
-            "iOS >= 6",
-            "ie >= 9",
-            "> 1%"
-          ]
-        },
         "loose": true,
         "modules": false,
         "exclude": [
@@ -18,5 +9,20 @@
         ]
       }
     ]
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "loose": true,
+            "exclude": [
+              "@babel/plugin-transform-typeof-symbol"
+            ]
+          }
+        ]
+      ]
+    }
+  }
 }

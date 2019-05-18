@@ -1,5 +1,5 @@
 import { createLocalVue, mount } from '@vue/test-utils';
-import vueOptionEvents from '../dist/vue-option-events.cjs';
+import vueOptionEvents from '../vue-option-events';
 import Parent from './components/parent';
 
 describe('vue-option-events keepAlive', () => {
