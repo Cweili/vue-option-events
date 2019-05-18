@@ -1,13 +1,18 @@
 import Grandchild from './grandchild';
+import increaseCountMixin from './increase-count-mixin';
 
 export default {
+  name: 'A',
+
+  mixins: [increaseCountMixin],
+
   components: {
-    Grandchild
+    Grandchild,
   },
 
   data: () => ({
     from: '',
-    count: 0
+    count: 0,
   }),
 
   methods: {
@@ -18,20 +23,18 @@ export default {
     sayHello() {
       this.$emit('hello', 'A');
       this.$emit('increaseCount');
-    }
+    },
   },
 
   events: {
     hello(from) {
       this.from = from;
     },
-    increaseCount: 'increaseCount'
   },
 
-  render: h =>
-    h('div', {}, [
-      h('Grandchild', {
-        ref: 'grandchild'
-      })
-    ])
+  render: h => h('div', {}, [
+    h('Grandchild', {
+      ref: 'grandchild',
+    }),
+  ]),
 };

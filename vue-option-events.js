@@ -1,79 +1,91 @@
-/**
- * vue-option-events
- */
-import Vue from 'vue';
+import {
+  isString,
+  isObject,
+  isFunction,
+  each,
+} from './lib/utils';
 
-function isString(value) {
-	if (typeof value === 'string') { return true; }
-	if (typeof value !== 'object') { return false; }
-	return Object.prototype.toString.call(value) === '[object String]';
+const OPTION_NAME = 'events';
+const HANDLER_MAP_NAME = '_eventHandlers';
+const INACTIVE_NAME = '_eventInactive';
+
+function offAll(eventBus, vm) {
+  each(vm[HANDLER_MAP_NAME], (handler, event) => {
+    eventBus.$off(event, handler);
+  });
 }
 
-function isObject(value) {
-  const type = typeof value;
-  return value != null && (type == 'object' || type == 'function');
-}
+const eventBus = {
+  install(Vue, {
+    keepAlive = false,
+  } = {}) {
+    const originalEmit = Vue.prototype.$emit;
+    const vue = new Vue();
 
-function isFunction(value) {
-  if (!isObject(value)) {
-    return false;
-  }
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 9 which returns 'object' for typed arrays and other constructors.
-  const tag = Object.prototype.toString.call(value);
-  const asyncTag = '[object AsyncFunction]';
-  const funcTag = '[object Function]';
-  const genTag = '[object GeneratorFunction]';
-  const proxyTag = '[object Proxy]';
-  return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
-}
+    const strats = Vue.config.optionMergeStrategies;
+    // use the same methods merging strategy for events
+    strats[OPTION_NAME] = strats.methods;
 
-function each(collection, handler) {
-  return collection && (Array.isArray(collection)
-    ? collection.forEach(handler)
-    : Object.keys(collection).forEach(key => handler(collection[key], key)));
-}
+    // global event bus
+    each([
+      '$on',
+      '$once',
+      '$off',
+      '$emit',
+    ], (name) => {
+      eventBus[name] = vue[name].bind(vue);
+    });
 
-const eventHub = new Vue();
-
-eventHub.install = (_Vue) => {
-  const originalEmit = _Vue.prototype.$emit;
-
-  _Vue.prototype.$emit = function(event, ...payload) {
-    originalEmit.call(this, event, ...payload);
-    if (this != eventHub) {
-      originalEmit.call(eventHub, event, ...payload);
-    }
-  };
-
-  _Vue.mixin({
-    beforeCreate() {
-      const _this = this;
-      if (!_this.$options.events) {
-        return;
+    Vue.prototype.$event = eventBus;
+    Vue.prototype.$emit = function $emit(event, ...payload) {
+      originalEmit.call(this, event, ...payload);
+      if (this != vue) {
+        originalEmit.call(vue, event, ...payload);
       }
-      const eventsHandlers = _this._eventsHandlers = {};
-      each(_this.$options.events, (handler, event) => {
-        let fn;
-        if (isFunction(handler)) {
-          fn = handler;
-        } else if (isString(handler)) {
-          fn = _this.$options.methods[handler];
-        } else {
+    };
+
+    Vue.mixin({
+      beforeCreate() {
+        const vm = this;
+        if (!isObject(vm.$options[OPTION_NAME])) {
           return;
         }
-        eventsHandlers[event] = (...args) => {
-          fn.apply(_this, args);
-        };
-        eventHub.$on(event, eventsHandlers[event]);
-      });
-    },
-    beforeDestroy() {
-      each(this._eventsHandlers, (handler, event) => {
-        eventHub.$off(event, handler);
-      });
-    }
-  });
+        const eventHandlers = vm[HANDLER_MAP_NAME] = {};
+        each(vm.$options[OPTION_NAME], (handler, event) => {
+          let fn;
+          if (isFunction(handler)) {
+            fn = handler;
+          } else if (isString(handler)) {
+            fn = vm.$options.methods[handler];
+          }
+          if (!isFunction(fn)) {
+            Vue.util.warn(`handler for event "${event}" is not a function`, vm);
+            return;
+          }
+          eventHandlers[event] = fn.bind(vm);
+          eventBus.$on(event, eventHandlers[event]);
+        });
+      },
+      activated() {
+        const vm = this;
+        if (!keepAlive && vm[INACTIVE_NAME]) {
+          each(vm[HANDLER_MAP_NAME], (handler, event) => {
+            eventBus.$on(event, handler);
+          });
+          vm[INACTIVE_NAME] = false;
+        }
+      },
+      deactivated() {
+        if (!keepAlive) {
+          offAll(eventBus, this);
+          this[INACTIVE_NAME] = true;
+        }
+      },
+      beforeDestroy() {
+        offAll(eventBus, this);
+      },
+    });
+  },
 };
 
-export default eventHub;
+export default eventBus;

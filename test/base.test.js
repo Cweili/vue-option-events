@@ -11,9 +11,9 @@ describe('vue-option-events', () => {
 
   beforeEach(() => {
     wrapper = mount(Parent, {
-      localVue
+      localVue,
     });
-    vm = wrapper.vm;
+    vm = wrapper.vm; // eslint-disable-line prefer-destructuring
   });
   afterEach(() => {
     wrapper.destroy();
@@ -47,11 +47,18 @@ describe('vue-option-events', () => {
     expect(a.count).toBe(1);
   });
 
-  it('should handle events from event-hub', () => {
+  it('should handle events from global event bus', () => {
     const { a } = vm.$refs;
-    vueOptionEvents.$emit('hello', 'Event-hub');
+    a.$refs.grandchild.sayHelloFromGlobalEventBus();
+    expect(a.from).toBe('GlobalEventBus');
+    expect(a.count).toBe(1);
+  });
+
+  it('should handle events from any where', () => {
+    const { a } = vm.$refs;
+    vueOptionEvents.$emit('hello', 'EventBus');
     vueOptionEvents.$emit('increaseCount');
-    expect(a.from).toBe('Event-hub');
+    expect(a.from).toBe('EventBus');
     expect(a.count).toBe(1);
   });
 
@@ -59,6 +66,37 @@ describe('vue-option-events', () => {
     vm.sayHello();
     expect(vm.from).toBe('');
     expect(vm.count).toBe(0);
+  });
+
+  it('should not triggered if component instance inactive', (done) => {
+    const { a } = vm.$refs;
+    vm.sayHello();
+    expect(a.count).toBe(1);
+    expect(vm.countFromA).toBe(1);
+    vm.deactivatedA();
+    vm.$nextTick(() => {
+      vm.sayHello();
+      expect(vm.countFromA).toBe(1);
+      done();
+    });
+  });
+
+  it('should triggered if component instance reactive', (done) => {
+    const { a } = vm.$refs;
+    vm.sayHello();
+    expect(a.count).toBe(1);
+    expect(vm.countFromA).toBe(1);
+    vm.deactivatedA();
+    vm.$nextTick(() => {
+      vm.sayHello();
+      expect(vm.countFromA).toBe(1);
+      vm.activatedA();
+      vm.$nextTick(() => {
+        vm.sayHello();
+        expect(vm.countFromA).toBe(2);
+        done();
+      });
+    });
   });
 
   it('should not triggered if component instance destroyed', () => {
