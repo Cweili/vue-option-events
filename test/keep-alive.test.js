@@ -21,7 +21,7 @@ describe('vue-option-events keepAlive', () => {
     wrapper.destroy();
   });
 
-  it('should triggered if component instance inactive', (done) => {
+  it('should triggered if component instance inactive', () => new Promise((done) => {
     const { a } = vm.$refs;
     vm.sayHello();
     expect(a.count).toBe(1);
@@ -32,5 +32,5 @@ describe('vue-option-events keepAlive', () => {
       expect(vm.countFromA).toBe(2);
       done();
     });
-  });
+  }));
 });

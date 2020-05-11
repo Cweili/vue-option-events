@@ -37,19 +37,19 @@
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
-    "@vue/test-utils": "^1.0.0-beta.28",
+    "@vue/test-utils": "^1.0.2",
     "babel-eslint": "^10.0.1",
     "conventional-changelog-cli": "^2.0.21",
-    "eslint": "^6.0.0",
+    "eslint": "^7.0.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-jest": "^23.0.0",
-    "jest": "^24.8.0",
-    "rollup": "^1.27.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.10.0",
+    "jest": "^26.0.1",
+    "rollup": "^2.9.1",
     "rollup-plugin-babel": "^4.3.0",
     "rollup-plugin-node-resolve": "^5.0.0",
-    "vue": "^2.5.21",
-    "vue-template-compiler": "^2.5.21"
+    "vue": "^2.6.11",
+    "vue-template-compiler": "^2.6.11"
   },
   "peerDependencies": {
     "vue": ">=2.0.0"

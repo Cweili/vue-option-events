@@ -68,7 +68,7 @@ describe('vue-option-events', () => {
     expect(vm.count).toBe(0);
   });
 
-  it('should not triggered if component instance inactive', (done) => {
+  it('should not triggered if component instance inactive', () => new Promise((done) => {
     const { a } = vm.$refs;
     vm.sayHello();
     expect(a.count).toBe(1);
@@ -79,9 +79,9 @@ describe('vue-option-events', () => {
       expect(vm.countFromA).toBe(1);
       done();
     });
-  });
+  }));
 
-  it('should triggered if component instance reactive', (done) => {
+  it('should triggered if component instance reactive', () => new Promise((done) => {
     const { a } = vm.$refs;
     vm.sayHello();
     expect(a.count).toBe(1);
@@ -97,15 +97,18 @@ describe('vue-option-events', () => {
         done();
       });
     });
-  });
+  }));
 
-  it('should not triggered if component instance destroyed', () => {
+  it('should not triggered if component instance destroyed', () => new Promise((done) => {
     const { a } = vm.$refs;
     vm.sayHello();
     expect(a.count).toBe(1);
     expect(vm.countFromA).toBe(1);
     vm.destroyA();
-    vm.sayHello();
-    expect(vm.countFromA).toBe(1);
-  });
+    vm.$nextTick(() => {
+      vm.sayHello();
+      expect(vm.countFromA).toBe(1);
+      done();
+    });
+  }));
 });

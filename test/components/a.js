@@ -32,7 +32,7 @@ export default {
     },
   },
 
-  render: h => h('div', {}, [
+  render: (h) => h('div', {}, [
     h('Grandchild', {
       ref: 'grandchild',
     }),
