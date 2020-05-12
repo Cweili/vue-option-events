@@ -107,7 +107,7 @@ Vue.use(vueOptionEvents, {
 [github]: https://github.com/Cweili/vue-option-events
 
 [badge-build]: https://img.shields.io/travis/Cweili/vue-option-events/master.svg
-[travis]: https://travis-ci.org/Cweili/vue-option-events
+[travis]: https://travis-ci.com/Cweili/vue-option-events
 
 [badge-coverage]: https://img.shields.io/codecov/c/github/Cweili/vue-option-events/master.svg
 [codecov]: https://codecov.io/gh/Cweili/vue-option-events
