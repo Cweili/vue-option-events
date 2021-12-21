@@ -7,8 +7,8 @@
 
 
 [![github][badge-issues]][github]
-[![build][badge-build]][travis]
-[![coverage][badge-coverage]][codecov]
+[![build][badge-build]][workflows]
+[![coverage][badge-coverage]][coveralls]
 
 Bring Vue.js 1 events option and $emit to Vue.js 2.
 
@@ -106,8 +106,8 @@ Vue.use(vueOptionEvents, {
 [badge-issues]: https://img.shields.io/github/issues/Cweili/vue-option-events.svg
 [github]: https://github.com/Cweili/vue-option-events
 
-[badge-build]: https://img.shields.io/travis/com/Cweili/vue-option-events/master.svg
-[travis]: https://travis-ci.com/Cweili/vue-option-events
+[badge-build]: https://img.shields.io/github/workflow/status/Cweili/req-json/ci/master
+[workflows]: https://github.com/Cweili/req-json/actions/workflows/ci.yml?query=branch%3Amaster
 
-[badge-coverage]: https://img.shields.io/codecov/c/github/Cweili/vue-option-events/master.svg
-[codecov]: https://codecov.io/gh/Cweili/vue-option-events
+[badge-coverage]: https://img.shields.io/coveralls/github/Cweili/req-json/master.svg
+[coveralls]: https://coveralls.io/github/Cweili/req-json?branch=master
